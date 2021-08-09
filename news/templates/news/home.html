@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title></title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    {% load static %}
+    <!-- Prism CSS -->
+    <link href="{% static " tinymce/css/prism.css" %}" rel="stylesheet">
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <!-- Compiled and minified JavaScript for Materialize CSS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+</head>
+
+<body>
+    <div class="jumbotron">
+        <div style="margin: auto; width: 50%; text-align: center;">
+            {% if 'history' in request.path %}
+            <h1>History</h1>
+            <a href="../" class="btn">Back</a>
+            {% else %}
+            <h1>Get Your Daily News</h1>
+
+            <form action="{% url 'scrape' %}" method="post">
+                {% csrf_token %}
+                <label for="topics" style="font-size: 1.2rem; color: black;">Choose a topic:</label>
+                <select name="topics" id="topics" style="display: inline; width: 40%;">
+                    <option value="">All</option>
+                    <option value="jobs">Jobs</option>
+                    <option value="housing">Housing</option>
+                    <option value="parenting-education">Parenting & Education</option>
+                    <option value="politics">Politics</option>
+                    <option value="health">Health</option>
+                    <option value="transport">Transport</option>
+                    <option value="courts-crime">Courts & Crime</option>
+                    <option value="consumer">Consumer</option>
+                    <option value="environment">Environment</option>
+                    <option value="community">Community</option>
+                </select>
+                <input type="submit" value="Go" class="btn">
+            </form>
+
+            <div style="padding: 10px;">
+                <a href="history/" class="btn">View History</a>
+                <a href="../" class="btn">Go to Home</a>
+            </div>
+            {% endif %}
+
+        </div>
+    </div>
+
+    {% if news_article.0 %}
+    <div style="padding: 10px; margin: 20px;">
+        <div class="card hoverable">
+            <div class="card-body">
+                <h5 class="card-title">{{news_article.0.title}}</h5>
+                <p>{{news_article.0.text}}</p>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <div style="padding: 10px; margin: 20px;">
+        {% for object in object_list %}
+        <div class="card hoverable">
+            <div class="card-body">
+                <h5 class="card-title">{{object.title}}</h5>
+                <p>{{object.text}}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <script src="http://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
